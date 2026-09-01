@@ -12,7 +12,7 @@
   },
   "type": "module",
   "main": "server.js ",
-   "scripts": {
+  "scripts": {
     "start": "node --env-file=.env server.js",
     "dev": "nodemon --env-file=.env server.js",
     "lint": "eslint .",
@@ -20,7 +20,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "mongodb": "^7.6.0"
   },
   "devDependencies": {
     "eslint": "^10.9.1",
