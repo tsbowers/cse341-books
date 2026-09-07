@@ -14,4 +14,4 @@ const getBookById = async (bookId) => {
   return book;
 };
 
-export { getAllBooks };
+export { getAllBooks, getBookById };
