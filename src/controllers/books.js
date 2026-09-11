@@ -8,10 +8,8 @@ const getBooksHandler = async (req, res) => {
     const books = await getAllBooks();          // ask the model for everything
     return res.status(200).json(books);         // 200 = success, send the array as JSON
   } catch (error) {
-    // Something unexpected broke (e.g. database connection lost).
     console.error('GET /books failed:', error.message); // log real details for ME to debug
     return res.status(500).json({ message: 'Internal server error' });
-    // send a SAFE, generic message to the client — never leak internal error details
   }
 };
 
