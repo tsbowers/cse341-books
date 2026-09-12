@@ -1,0 +1,67 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Books API",
+    "version": "1.0.0",
+    "description": "A simple API for working with books"
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current server"
+    }
+  ],
+  "paths": {
+    "/books": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Get all books",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all books"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/books/{id}": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Get a book by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The book ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the book"
+          },
+          "400": {
+            "description": "Invalid book ID"
+          },
+          "404": {
+            "description": "Book not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}
