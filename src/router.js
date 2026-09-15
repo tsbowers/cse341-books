@@ -1,5 +1,12 @@
 import express from 'express';
-import { getBooksHandler, getBookByIdHandler } from './controllers/books.js';
+import {
+  getBooksHandler,
+  getBookByIdHandler,
+  createBookHandler,
+  updateBookHandler,
+  deleteBookHandler
+} from './controllers/books.js';
+
 import {
   getAllAuthors,
   getAuthorById,
@@ -12,6 +19,7 @@ import {
 // It doesn't touch the database or decide what response to send — it just routes.
 
 const router = express.Router();
+
 /**
  * @openapi
  * /books:
@@ -26,7 +34,7 @@ const router = express.Router();
  *         description: Internal server error
  */
 router.get('/books', getBooksHandler);
-// GET request to /books  -> run getBooksHandler
+
 /**
  * @openapi
  * /books/{id}:
@@ -44,16 +52,127 @@ router.get('/books', getBooksHandler);
  *     responses:
  *       200:
  *         description: Successfully retrieved the book
- *       400:
- *         description: Invalid book ID
  *       404:
  *         description: Book not found
  *       500:
  *         description: Internal server error
  */
 router.get('/books/:id', getBookByIdHandler);
-// GET request to /books/anything -> run getBookByIdHandler
-// the ':id' part is a placeholder that captures whatever comes after /books/
+
+/**
+ * @openapi
+ * /books:
+ *   post:
+ *     tags:
+ *       - Books
+ *     summary: Create a book
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *               - authorId
+ *               - title
+ *               - publicationDate
+ *             properties:
+ *               id:
+ *                 type: string
+ *               authorId:
+ *                 type: string
+ *               title:
+ *                 type: string
+ *               publicationDate:
+ *                 type: string
+ *                 format: date
+ *           example:
+ *             id: b4
+ *             authorId: a4
+ *             title: Example Book
+ *             publicationDate: 2026-01-15
+ *     responses:
+ *       201:
+ *         description: Book created successfully
+ *       400:
+ *         description: Missing, invalid, duplicate, or invalid author data
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/books', createBookHandler);
+
+/**
+ * @openapi
+ * /books/{id}:
+ *   put:
+ *     tags:
+ *       - Books
+ *     summary: Update a book
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The book ID
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - authorId
+ *               - title
+ *               - publicationDate
+ *             properties:
+ *               authorId:
+ *                 type: string
+ *               title:
+ *                 type: string
+ *               publicationDate:
+ *                 type: string
+ *                 format: date
+ *           example:
+ *             authorId: a5
+ *             title: Updated Book Title
+ *             publicationDate: 2026-02-20
+ *     responses:
+ *       200:
+ *         description: Book updated successfully
+ *       400:
+ *         description: Missing, invalid, or invalid author data
+ *       404:
+ *         description: Book not found
+ *       500:
+ *         description: Internal server error
+ */
+router.put('/books/:id', updateBookHandler);
+
+/**
+ * @openapi
+ * /books/{id}:
+ *   delete:
+ *     tags:
+ *       - Books
+ *     summary: Delete a book
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The book ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Book deleted successfully
+ *       404:
+ *         description: Book not found
+ *       500:
+ *         description: Internal server error
+ */
+router.delete('/books/:id', deleteBookHandler);
 
 /**
  * @openapi
@@ -119,7 +238,7 @@ router.get('/authors/:id', getAuthorById);
  *               birthYear:
  *                 type: integer
  *           example:
- *             id: a4
+ *             id: a7
  *             name: Example Author
  *             birthYear: 1980
  *     responses:
